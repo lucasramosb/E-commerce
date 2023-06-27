@@ -10,14 +10,17 @@ const Header = () => {
 
     const handleLoginClick = () =>{
         navigate('/login')
-    }   
+    };
+    const handleExplorarLogin = () => {
+        navigate('/')
+    }  
 
     return (
         <HeaderContainer>
             <HeaderTitle>CLUB CLOTHING</HeaderTitle>
             
             <HeaderItems>
-                <HeaderItem>Explorar</HeaderItem>
+                <HeaderItem onClick={handleExplorarLogin}>Explorar</HeaderItem>
                 <HeaderItem onClick={handleLoginClick}>Login</HeaderItem>
                 <HeaderItem>Criar Conta</HeaderItem>
                 <HeaderItem>
