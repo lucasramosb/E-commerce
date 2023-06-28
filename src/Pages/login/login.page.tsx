@@ -48,7 +48,7 @@ const LoginPage = () => {
 
                     <LoginInputContainer>
                         <p>Senha</p>
-                        <CustomInput hasError={!!errors.password} placeholder="Digite sua senha" {...register('password', {required: true})} />
+                        <CustomInput type="password" hasError={!!errors.password} placeholder="Digite sua senha" {...register('password', {required: true})} />
                         {errors?.password?.type === 'required' && (<InputErrorMessage>A senha é obrigatória</InputErrorMessage>)}
                     </LoginInputContainer>
 
