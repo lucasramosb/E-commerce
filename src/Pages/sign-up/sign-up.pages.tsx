@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import validator from "validator";
 import { auth, db } from "../../config/firebase.config";
 import { addDoc, collection } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { AuthError, AuthErrorCodes, createUserWithEmailAndPassword } from "firebase/auth";
 
 interface SignUpForm {
     firstName: string, 
@@ -24,7 +24,7 @@ interface SignUpForm {
 
 const SingUpPage = () => {
 
-    const { register, handleSubmit, formState: {errors}, watch } = useForm<SignUpForm>();
+    const { register, handleSubmit, formState: {errors}, watch, setError } = useForm<SignUpForm>();
 
     const handleSubmitPress = async (data: SignUpForm) => {
         try{
@@ -40,13 +40,15 @@ const SingUpPage = () => {
             })
 
         }catch(error) {
-            console.log(error)
+            const _error = error as AuthError
+
+            if(_error.code === AuthErrorCodes.EMAIL_EXISTS) {
+                return setError('email', {type: 'alreadyInUse'} )
+            }
         }
     }
 
     const watchPassword = watch('password')
-
-    console.log({errors})
 
     return ( 
         <>
@@ -80,25 +82,28 @@ const SingUpPage = () => {
                         })} />
                         {errors?.email?.type === 'required' && (<InputErrorMessage>O e-mail é obrigatória</InputErrorMessage>)}
                         {errors?.email?.type === 'validate' && (<InputErrorMessage>Insira um E-mail valido</InputErrorMessage>)}
+                        {errors?.email?.type === 'alreadyInUse' && (<InputErrorMessage>Este E-mail já esta sendo utilizado</InputErrorMessage>)}
                     </SignUpInputContainer>
 
                     <SignUpInputContainer>
                         <p>Senha</p>
                         <CustomInput hasError={!!errors?.password} type="password" placeholder="Digite sua Senha"
-                        {...register('password', { required: true })} />
+                        {...register('password', { required: true, minLength: 6 })} />
                         {errors?.password?.type === 'required' && (<InputErrorMessage>Digite uma Senha</InputErrorMessage>)}
+                        {errors?.password?.type === 'minLength' && (<InputErrorMessage>A senha precisa ter pelo menos 6 caracteres</InputErrorMessage>)}
                     </SignUpInputContainer>
 
                     <SignUpInputContainer>
                         <p>Confirmação de Senha</p>
                         <CustomInput hasError={!!errors?.passwordConfirmation} type="password" placeholder="Confirme sua Senha"
-                        {...register('passwordConfirmation', { required: true,
+                        {...register('passwordConfirmation', { required: true, minLength: 6,
                             validate: (value) =>{
                                 return value === watchPassword
                             } })} />
 
                         {errors?.passwordConfirmation?.type === 'required' && (<InputErrorMessage>Confirme sua senha</InputErrorMessage>)}
-                        {errors?.passwordConfirmation?.type === 'validate' && (<InputErrorMessage>As duas senha precisão ser iguais</InputErrorMessage>)}
+                        {errors?.passwordConfirmation?.type === 'validate' && (<InputErrorMessage>As duas senha devem ser iguais</InputErrorMessage>)}
+                        {errors?.password?.type === 'minLength' && (<InputErrorMessage>A senha precisa ter pelo menos 6 caracteres</InputErrorMessage>)}
                     </SignUpInputContainer>
 
                     <CustomButton onClick={() => handleSubmit(handleSubmitPress)()}>Criar conta</CustomButton>
