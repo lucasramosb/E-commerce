@@ -56,6 +56,7 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.32.2",
+    "firebase": "9.23.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "prettier-config-standard": "^5.0.0",
