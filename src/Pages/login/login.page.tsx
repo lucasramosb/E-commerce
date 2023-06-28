@@ -13,9 +13,14 @@ import { FiLogIn } from 'react-icons/fi'
 import { useForm } from 'react-hook-form'
 import validator from "validator";
 
+interface LoginForm {
+    email: string
+    password: string
+}
+
 const LoginPage = () => {
 
-    const { register, formState: { errors }, handleSubmit } = useForm();
+    const { register, formState: { errors }, handleSubmit } = useForm<LoginForm>();
 
     const handleSubmitPress = (data: any) =>{
         console.log({ data })
