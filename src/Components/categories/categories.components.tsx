@@ -1,22 +1,30 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import CategoryItem from '../category-item/category-item.component';
+import { getDocs, collection } from 'firebase/firestore';
 
 // Utilities
 import Category from '../../Types/category.types';
-import env from '../../config/env.config';
 
 //Styles
 import { CategoriesContainer, CategoriesContent } from './categories.styles'
+import { db } from '../../config/firebase.config';
+import { categoryConverter } from '../../converters/firestore.converters';
 
 const Categories = () => {
     const [categories, setCategories] = useState<Category[]>([]) 
 
     const fetchCategories = async () => {
         try{
-            const { data } = await axios.get(`${env.apiUrl}/api/category`)
-            console.log(data)
-            setCategories(data)
+            const categoriesFromFirestore: Category[] = []
+
+            const querySnapshot = await getDocs(collection(db, 'categories').withConverter(categoryConverter))
+
+            querySnapshot.forEach((doc) => {
+                categoriesFromFirestore.push(doc.data())
+            })
+            
+            setCategories(categoriesFromFirestore)
+
         }catch(error) {
             console.log({error})
         }
