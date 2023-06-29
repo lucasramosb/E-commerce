@@ -12,8 +12,9 @@ import { BsGoogle } from 'react-icons/bs'
 import { FiLogIn } from 'react-icons/fi'
 import { useForm } from 'react-hook-form'
 import validator from "validator";
-import { AuthError, AuthErrorCodes, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../config/firebase.config";
+import { AuthError, AuthErrorCodes, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, db, googlePorvider } from "../../config/firebase.config";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 
 interface LoginForm {
     email: string
@@ -28,7 +29,7 @@ const LoginPage = () => {
         try{
             const userCredentials = await signInWithEmailAndPassword(auth, data.email, data.password)
 
-            console.log({userCredentials})
+            // console.log({userCredentials})
 
         }catch(error) {
             const _error = error as AuthError
@@ -42,6 +43,37 @@ const LoginPage = () => {
             }
         }
     }
+    
+    //Login Google
+    const handleSignWithGoogle = async () => {
+        try{
+            //adiciona o login com o google
+            const userCredentials = await signInWithPopup(auth, googlePorvider)
+
+            //retorna o usario se ele existir no banco
+            const querySnapshot = await getDocs(query(collection(db, 'users'), where('id', '==', userCredentials.user.uid)))
+
+            //pega os dados do usuario 
+            const user = querySnapshot.docs[0]?.data()
+
+            //se o usuario não existir ele sera cadastrado no banco
+            if(!user){
+                //split para dividir o objeto displayName e atribui-lo a uma variavel
+                const firstName = userCredentials.user.displayName?.split(' ')[0]
+                const lastName = userCredentials.user.displayName?.split(' ')[1]
+                await addDoc(collection(db, 'users'), {
+                    id: userCredentials.user.uid, 
+                    email: userCredentials.user.email,
+                    firstName,
+                    lastName,
+                    provider: 'google',
+                    photoUrl: userCredentials.user.photoURL
+                })
+            }
+        }catch(error) {
+
+        }
+    }
 
     return ( 
         <>
@@ -52,7 +84,7 @@ const LoginPage = () => {
 
                     <LoginHeadline>Entre com a sua conta</LoginHeadline>
 
-                    <CustomButton startIcon={<BsGoogle size={18}/>}>Entrar com o Google</CustomButton>
+                    <CustomButton onClick={handleSignWithGoogle} startIcon={<BsGoogle size={18}/>}>Entrar com o Google</CustomButton>
 
                     <LoginSubtitle>Ou entre com seu e-mail</LoginSubtitle>
 
