@@ -6,26 +6,25 @@ import SingUpPage from './Pages/sign-up/sign-up.pages';
 // Utils
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth'
-import { FunctionComponent, useContext } from 'react';
+import { FunctionComponent, useContext, useState } from 'react';
 import { auth, db } from './config/firebase.config';
 import { userContext } from './contexts/user.context'
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const App: FunctionComponent = () => {
-   
-  const { currentUser, isAuthenticated, loginUser, logoutUser } = useContext(userContext)
 
-  console.log({currentUser})
-  console.log({isAuthenticated})
-  console.log({loginUser})
+  const [ isInitializing, setIniatializing ] = useState(true);
+   
+  const { isAuthenticated, loginUser, logoutUser } = useContext(userContext);
 
   //se o usuario estiver logado no contexto, e o usuario do firebase(sign out)
   //devemos limpar o contexto(sign out)
   onAuthStateChanged(auth, async (user) => {
     const isSingnInOut = isAuthenticated && !user
     if(isSingnInOut){
-      return logoutUser()
-    }
+      logoutUser()
+      return setIniatializing(false)
+    };
 
     //se o usuario for nulo no contexto, e não for nulo no firebase
     //devemos fazer login
@@ -36,10 +35,16 @@ const App: FunctionComponent = () => {
 
       const userFromFirestore = QuerySnapshot.docs[0]?.data()
 
-      return loginUser(userFromFirestore as any)
-    }
-  })
+      loginUser(userFromFirestore as any)
+      return setIniatializing(false)
+    };
 
+    return setIniatializing(false)
+  });
+
+  //enquanto isInitializing for true, não retorne nada
+  if(isInitializing) return null
+ 
   return (
     <BrowserRouter> 
       <Routes>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // Styles
 import { LoginContainer, LoginContent, LoginHeadline, LoginInputContainer, LoginSubtitle } from "./login.styles";
 
@@ -15,6 +16,9 @@ import validator from "validator";
 import { AuthError, AuthErrorCodes, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, db, googlePorvider } from "../../config/firebase.config";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { useEffect, useContext } from 'react'
+import { userContext } from "../../contexts/user.context";
+import { useNavigate } from "react-router-dom";
 
 interface LoginForm {
     email: string
@@ -74,6 +78,17 @@ const LoginPage = () => {
 
         }
     }
+
+    const {isAuthenticated} = useContext(userContext);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(isAuthenticated){
+            navigate('/')
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[isAuthenticated])
 
     return ( 
         <>

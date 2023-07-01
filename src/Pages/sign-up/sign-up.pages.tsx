@@ -13,6 +13,9 @@ import validator from "validator";
 import { auth, db } from "../../config/firebase.config";
 import { addDoc, collection } from "firebase/firestore";
 import { AuthError, AuthErrorCodes, createUserWithEmailAndPassword } from "firebase/auth";
+import { userContext } from "../../contexts/user.context";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface SignUpForm {
     firstName: string, 
@@ -49,7 +52,18 @@ const SingUpPage = () => {
         }
     }
 
-    const watchPassword = watch('password')
+    const watchPassword = watch('password');
+
+    const {isAuthenticated} = useContext(userContext);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(isAuthenticated){
+            navigate('/')
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthenticated])
 
     return ( 
         <>
