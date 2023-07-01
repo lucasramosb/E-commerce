@@ -1,10 +1,10 @@
-import { FunctionComponent } from "react";
-
-// Utilities
-import Category from "../../Types/category.types";
-
 // Styles
 import {CategoryItemContainer, CategoryName} from './category.styles'
+
+// Utilities
+import Category from "../../types/category.types";
+import { FunctionComponent } from "react";
+
 
 interface CategoryItemProps {
     category: Category
