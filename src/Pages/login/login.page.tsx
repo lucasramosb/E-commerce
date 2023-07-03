@@ -7,6 +7,7 @@ import CustomButton from "../../Components/custom-button/custom-button.component
 import Header from "../../Components/header/header.component";
 import InputErrorMessage from "../../Components/input-error-message/input-error-message.component";
 import CustomInput from "../../Components/custom-input/custom-input.component";
+import Loading from "../../Components/loading/loading.components";
 
 // Utilities
 import { BsGoogle } from 'react-icons/bs'
@@ -16,7 +17,7 @@ import validator from "validator";
 import { AuthError, AuthErrorCodes, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, db, googlePorvider } from "../../config/firebase.config";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { useEffect, useContext } from 'react'
+import { useEffect, useContext, useState } from 'react'
 import { userContext } from "../../contexts/user.context";
 import { useNavigate } from "react-router-dom";
 
@@ -29,9 +30,13 @@ const LoginPage = () => {
 
     const { register, formState: { errors }, handleSubmit, setError } = useForm<LoginForm>();
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const handleSubmitPress = async (data: LoginForm) =>{
         try{
-            const userCredentials = await signInWithEmailAndPassword(auth, data.email, data.password)
+            setIsLoading(true);
+
+            const userCredentials = await signInWithEmailAndPassword(auth, data.email, data.password);
 
             // console.log({userCredentials})
 
@@ -45,12 +50,16 @@ const LoginPage = () => {
             if (_error.code === AuthErrorCodes.USER_DELETED){
                 return setError('email', {type: 'notFound'})
             }
+        }finally{
+            setIsLoading(false);
         }
     }
     
     //Login Google
     const handleSignWithGoogle = async () => {
         try{
+            setIsLoading(true)
+
             //adiciona o login com o google
             const userCredentials = await signInWithPopup(auth, googlePorvider)
 
@@ -76,6 +85,8 @@ const LoginPage = () => {
             }
         }catch(error) {
 
+        }finally{
+            setIsLoading(false)
         }
     }
 
@@ -93,6 +104,9 @@ const LoginPage = () => {
     return ( 
         <>
             <Header />
+
+            {/* quando o Loading for true, Renderizar o carregamento de tela */}
+            {isLoading && <Loading/>}
 
             <LoginContainer>
                 <LoginContent>
