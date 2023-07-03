@@ -28,7 +28,7 @@ const Header = () => {
 
     return (
         <HeaderContainer>
-            <HeaderTitle>CLUB CLOTHING</HeaderTitle>
+            <HeaderTitle onClick={handleExplorarLogin}>CLUB CLOTHING</HeaderTitle>
             
             <HeaderItems>
                 <HeaderItem onClick={handleExplorarLogin}>Explorar</HeaderItem>
