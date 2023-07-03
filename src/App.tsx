@@ -44,7 +44,7 @@ const App: FunctionComponent = () => {
     return setIniatializing(false)
   });
 
-  //enquanto isInitializing for true, não retorne nada
+  //enquanto isInitializing for true, retorne o component Loading
   if(isInitializing) return <Loading/>
  
   return (

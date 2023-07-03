@@ -5,7 +5,7 @@ import { SyncLoader } from 'react-spinners';
 const Loading: FunctionComponent = () => {
     return ( 
         <LoadingContainer>
-            <SyncLoader size={30}/>
+            <SyncLoader size={20}/>
         </LoadingContainer>
     );
 }
