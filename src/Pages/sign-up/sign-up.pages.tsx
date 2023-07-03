@@ -1,11 +1,12 @@
+// Styles
+import { SignUpContainer, SignUpContent, SignUpHeadline, SignUpInputContainer } from "./sign-up.styles";
+
 // Components
 import CustomButton from "../../Components/custom-button/custom-button.component";
 import CustomInput from "../../Components/custom-input/custom-input.component";
 import Header from "../../Components/header/header.component";
 import InputErrorMessage from "../../Components/input-error-message/input-error-message.component";
-
-// Styles
-import { SignUpContainer, SignUpContent, SignUpHeadline, SignUpInputContainer } from "./sign-up.styles";
+import Loading from "../../Components/loading/loading.components";
 
 //Utilities
 import { useForm } from "react-hook-form";
@@ -14,9 +15,8 @@ import { auth, db } from "../../config/firebase.config";
 import { addDoc, collection } from "firebase/firestore";
 import { AuthError, AuthErrorCodes, createUserWithEmailAndPassword } from "firebase/auth";
 import { userContext } from "../../contexts/user.context";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 interface SignUpForm {
     firstName: string, 
     lastName: string,
@@ -29,8 +29,12 @@ const SingUpPage = () => {
 
     const { register, handleSubmit, formState: {errors}, watch, setError } = useForm<SignUpForm>();
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const handleSubmitPress = async (data: SignUpForm) => {
         try{
+            setIsLoading(true)
+
             const userCredentials = await createUserWithEmailAndPassword(auth, data.email, data.password)
 
             console.log({userCredentials})
@@ -49,6 +53,8 @@ const SingUpPage = () => {
             if(_error.code === AuthErrorCodes.EMAIL_EXISTS) {
                 return setError('email', {type: 'alreadyInUse'} )
             }
+        } finally{
+            setIsLoading(false)
         }
     }
 
@@ -68,6 +74,8 @@ const SingUpPage = () => {
     return ( 
         <>
             <Header/>
+
+            {isLoading && <Loading/>}
 
             <SignUpContainer>
                 <SignUpContent>
