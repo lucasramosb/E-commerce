@@ -11,6 +11,7 @@ import { auth, db } from './config/firebase.config';
 import { userContext } from './contexts/user.context'
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { userConverter } from './converters/firestore.converters';
+import Loading from './Components/loading/loading.components';
 
 const App: FunctionComponent = () => {
 
@@ -44,7 +45,7 @@ const App: FunctionComponent = () => {
   });
 
   //enquanto isInitializing for true, não retorne nada
-  if(isInitializing) return null
+  if(isInitializing) return <Loading/>
  
   return (
     <BrowserRouter> 
