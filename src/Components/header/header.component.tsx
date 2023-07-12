@@ -13,12 +13,15 @@ import { auth } from '../../config/firebase.config';
 const Header = () => {
 
     const navigate = useNavigate();
-
+    
+    const handleLogoClick = () => {
+        navigate('/')
+    }
     const handleLoginClick = () =>{
         navigate('/login')
     };
-    const handleExplorarLogin = () => {
-        navigate('/')
+    const handleExplorarClick = () => {
+        navigate('/explore')
     }
     const handleSignUpClick = () => {
         navigate('/sign-up')
@@ -28,10 +31,10 @@ const Header = () => {
 
     return (
         <HeaderContainer>
-            <HeaderTitle onClick={handleExplorarLogin}>CLUB CLOTHING</HeaderTitle>
+            <HeaderTitle onClick={handleLogoClick}>CLUB CLOTHING</HeaderTitle>
             
             <HeaderItems>
-                <HeaderItem onClick={handleExplorarLogin}>Explorar</HeaderItem>
+                <HeaderItem onClick={handleExplorarClick}>Explorar</HeaderItem>
                 {
                     !isAuthenticated && (
                         <>
