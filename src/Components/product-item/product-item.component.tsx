@@ -5,6 +5,7 @@ import { ProductContainer, ProductImage, ProductInfo } from './product-item.styl
 import { FunctionComponent } from 'react'
 import Product from '../../Types/product.type';
 
+
 interface ProductsItemProps{
     product: Product
 }
