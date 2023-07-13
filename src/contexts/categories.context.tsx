@@ -39,6 +39,8 @@ const CategoryContextProvider: FunctionComponent<CategoryProps> = ({children}) =
             
             setCategories(categoriesFromFirestore)
 
+            console.log({categories})
+
         }catch(error) {
             console.log({error})
         }finally{
