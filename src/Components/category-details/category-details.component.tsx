@@ -1,5 +1,4 @@
 import { FunctionComponent, useState, useEffect } from "react";
-import Category from "../../types/category.types";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../config/firebase.config";
 import { categoryConverter } from "../../converters/firestore.converters";
@@ -8,6 +7,7 @@ import { Container, CategoryTitle, IconContainer, ProductsContainer } from "./ca
 import { BiChevronLeft } from 'react-icons/bi'
 import ProductItem from "../product-item/product-item.component";
 import { useNavigate } from "react-router-dom";
+import Category from '../../types/category.types';
 
 interface CategoryDetailsProps{
     CategoryId: string
