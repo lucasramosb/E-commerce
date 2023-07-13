@@ -2,7 +2,7 @@
 import {CategoryItemContainer, CategoryName} from './category.styles'
 
 // Utilities
-import Category from "../../types/category.types";
+import Category from "../../Types/category.types";
 import { FunctionComponent } from "react";
 import { useNavigate } from 'react-router-dom';
 

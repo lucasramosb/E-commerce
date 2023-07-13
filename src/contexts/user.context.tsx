@@ -1,5 +1,5 @@
 import { FunctionComponent, createContext, useState,  } from "react";
-import User from "../types/user.types";
+import User from "../Types/user.types";
 
 interface IUserContext {
     currentUser: User | null,

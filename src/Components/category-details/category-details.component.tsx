@@ -7,7 +7,7 @@ import { Container, CategoryTitle, IconContainer, ProductsContainer } from "./ca
 import { BiChevronLeft } from 'react-icons/bi'
 import ProductItem from "../product-item/product-item.component";
 import { useNavigate } from "react-router-dom";
-import Category from "../../types/category.types";
+import Category from "../../Types/category.types";
 
 interface CategoryDetailsProps{
     CategoryId: string

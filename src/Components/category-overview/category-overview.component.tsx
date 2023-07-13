@@ -8,7 +8,7 @@ import {
 } from './category-overview.styles'
 
 // Utilities
-import Category from '../../types/category.types'
+import Category from '../../Types/category.types'
 import ProductItem from '../product-item/product-item.component'
 
 // Components
