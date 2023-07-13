@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //Styles
 import { CategoriesContainer, CategoriesContent } from './categories.styles'
 
