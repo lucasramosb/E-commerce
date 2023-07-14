@@ -27,11 +27,29 @@ const CartContextProvider: FunctionComponent<CartContextProps>  = ({children}) =
     const [products, setProducts] = useState<CartProduct[]>([])
 
     const toggleCart = () => {
-        //pega o state anterior e seta o inverso do anterior
+        //pega o state anterior e seta o inverso 
         setIsVisible( prevState => !prevState )
     }
 
     const addProductCart = (product: Product) => {
+
+        //verificar se  produto ja esta no carrinho
+        const productIsAlreadyInCart = products.some( 
+            (item) => item.id === product.id
+        )
+
+        //Se sim => aumentar sua quantidade
+        if(productIsAlreadyInCart){
+            //se o produto atual for igual ao que ja esta no carrinho ? setar o item atual e adicione +1 a quantidade : retorne somente o item
+            return setProducts( products => 
+                products.map((item) => 
+                    item.id === product.id 
+                    ? {...item, quantity: item.quantity + 1 } : item
+                )
+            )
+        }
+
+        //se não => adiciona-lo
         setProducts((prevState) => [...prevState, {...product, quantity: 1}])
     }
 
