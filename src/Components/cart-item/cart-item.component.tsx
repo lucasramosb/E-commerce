@@ -2,15 +2,23 @@
 import { CartItemContainer, CartItemImage, CartItemInfo, CartItemQuantity, RemoveButton } from "./cart-item.styles";
 
 //Utilities
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import CartProduct from "../../Types/cart.types";
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineClose } from 'react-icons/ai'
+import { CartContext } from "../../contexts/cart.context";
 
 interface CartItemProps{
     product: CartProduct
 }
 
 const CartItem: FunctionComponent<CartItemProps> = ({product}) => {
+
+    const { removeProductCart } = useContext(CartContext)
+
+    const handleRemoveClick = () => {
+        removeProductCart(product.id)
+    }
+
     return ( 
         <CartItemContainer>
             <CartItemImage imageUrl={product.imageUrl}/>
@@ -26,7 +34,7 @@ const CartItem: FunctionComponent<CartItemProps> = ({product}) => {
                 </CartItemQuantity>
             </CartItemInfo>
 
-            <RemoveButton>
+            <RemoveButton onClick={handleRemoveClick} >
                 <AiOutlineClose size={25}/>
             </RemoveButton>
         </CartItemContainer>

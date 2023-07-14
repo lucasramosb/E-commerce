@@ -7,13 +7,15 @@ interface ICartContext {
     products: CartProduct[],
     toggleCart: () => void,
     addProductCart: (product : Product) => void
+    removeProductCart: (productId: string) => void
 }
 
 export const CartContext = createContext<ICartContext>({
     isVisible: false,
     products: [],
     toggleCart: () => {},
-    addProductCart: () => {}
+    addProductCart: () => {},
+    removeProductCart: () => {}
 })
 
 interface CartContextProps{
@@ -32,7 +34,6 @@ const CartContextProvider: FunctionComponent<CartContextProps>  = ({children}) =
     }
 
     const addProductCart = (product: Product) => {
-
         //verificar se  produto ja esta no carrinho
         const productIsAlreadyInCart = products.some( 
             (item) => item.id === product.id
@@ -48,13 +49,18 @@ const CartContextProvider: FunctionComponent<CartContextProps>  = ({children}) =
                 )
             )
         }
-
         //se não => adiciona-lo
         setProducts((prevState) => [...prevState, {...product, quantity: 1}])
     }
 
+    const removeProductCart = (productId: string) => {
+        //faz um filtro e seta todos os item que que tem o id difirente
+        setProducts( products => products.filter( product => product.id !== productId))
+    }
+
+
     return (
-        <CartContext.Provider value={{isVisible, products, toggleCart, addProductCart}}>
+        <CartContext.Provider value={{isVisible, products, toggleCart, addProductCart, removeProductCart}}>
             {children}
         </CartContext.Provider>
     )
