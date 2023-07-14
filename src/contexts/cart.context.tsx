@@ -1,13 +1,13 @@
 import { createContext, FunctionComponent, useState } from 'react';
 import CartProduct from "../Types/cart.types";
 
-interface ICartContent {
+interface ICartContext {
     isVisible: boolean,
     products: CartProduct[],
     toggleCart: () => void
 }
 
-const CartContext = createContext<ICartContent>({
+export const CartContext = createContext<ICartContext>({
     isVisible: false,
     products: [],
     toggleCart: () => {}

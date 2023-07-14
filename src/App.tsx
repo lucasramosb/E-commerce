@@ -14,6 +14,7 @@ import { userConverter } from './converters/firestore.converters';
 import Loading from './Components/loading/loading.components';
 import ExplorePage from './Pages/explore/explore.page';
 import CategoryDetailsPage from './Pages/category-datails/category-datails.page';
+import Cart from './Components/cart/cart.component';
 
 const App: FunctionComponent = () => {
 
@@ -58,6 +59,8 @@ const App: FunctionComponent = () => {
         <Route path='/login' element={<LoginPage/>} />
         <Route path='/sign-up' element={<SingUpPage/>} />
       </Routes>
+
+      <Cart/>
     </BrowserRouter>
   )
 }
