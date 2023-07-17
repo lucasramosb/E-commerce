@@ -1,15 +1,16 @@
-import { createContext, FunctionComponent, useState } from 'react';
+import { createContext, FunctionComponent, useMemo, useState } from 'react';
 import CartProduct from "../Types/cart.types";
 import Product from '../Types/product.type';
 
 interface ICartContext {
-    isVisible: boolean,
-    products: CartProduct[],
-    toggleCart: () => void,
-    addProductCart: (product : Product) => void,
-    removeProductCart: (productId: string) => void,
-    increasePoductQuantity: (productId: string) => void,
+    isVisible: boolean
+    products: CartProduct[]
+    toggleCart: () => void
+    addProductCart: (product : Product) => void
+    removeProductCart: (productId: string) => void
+    increasePoductQuantity: (productId: string) => void
     decreaseProductQuantity: (productId: string) => void
+    productsTotalPrice: number
 }
 
 export const CartContext = createContext<ICartContext>({
@@ -19,7 +20,8 @@ export const CartContext = createContext<ICartContext>({
     addProductCart: () => {},
     removeProductCart: () => {},
     increasePoductQuantity: () => [],
-    decreaseProductQuantity: () => {}
+    decreaseProductQuantity: () => {},
+    productsTotalPrice: 0
 })
 
 interface CartContextProps{
@@ -73,16 +75,22 @@ const CartContextProvider: FunctionComponent<CartContextProps>  = ({children}) =
 
     const decreaseProductQuantity = (productId: string) => {
         setProducts((products) => 
-        products.map((product) => 
-            product.id === productId 
-            ? {...product, quantity: product.quantity - 1} : product
-        ).filter((product) => product.quantity > 0)
-    )
+            products.map((product) => 
+                product.id === productId 
+                ? {...product, quantity: product.quantity - 1} : product
+            ).filter((product) => product.quantity > 0)
+        )
     }
+
+    const productsTotalPrice = useMemo(() => {
+        return products.reduce((acc, currentProduct) => {
+            return acc + currentProduct.price * currentProduct.quantity
+        }, 0)
+    }, [products])
 
 
     return (
-        <CartContext.Provider value={{isVisible, products, toggleCart, addProductCart, removeProductCart, increasePoductQuantity, decreaseProductQuantity}} >
+        <CartContext.Provider value={{isVisible, products, toggleCart, addProductCart, removeProductCart, increasePoductQuantity, decreaseProductQuantity, productsTotalPrice}} >
             {children}
         </CartContext.Provider>
     )
