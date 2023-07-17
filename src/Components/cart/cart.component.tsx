@@ -33,6 +33,7 @@ const Cart: FunctionComponent = () => {
                 {productsCount === 0 && (
                     <p>Seu Carrinho está vazio!</p>
                 )}
+
             </CartContent>
         </CartContainer>
     );
