@@ -11,6 +11,7 @@ interface ICartContext {
     increasePoductQuantity: (productId: string) => void
     decreaseProductQuantity: (productId: string) => void
     productsTotalPrice: number
+    productsCount: number
 }
 
 export const CartContext = createContext<ICartContext>({
@@ -21,7 +22,8 @@ export const CartContext = createContext<ICartContext>({
     removeProductCart: () => {},
     increasePoductQuantity: () => [],
     decreaseProductQuantity: () => {},
-    productsTotalPrice: 0
+    productsTotalPrice: 0,
+    productsCount: 0
 })
 
 interface CartContextProps{
@@ -88,9 +90,16 @@ const CartContextProvider: FunctionComponent<CartContextProps>  = ({children}) =
         }, 0)
     }, [products])
 
+    //contagem do numero de itens no carrinho
+    const productsCount = useMemo(() => {
+        return products.reduce((acc, currentProduct) => {
+            return acc + currentProduct.quantity
+        }, 0)
+    }, [products])
+
 
     return (
-        <CartContext.Provider value={{isVisible, products, toggleCart, addProductCart, removeProductCart, increasePoductQuantity, decreaseProductQuantity, productsTotalPrice}} >
+        <CartContext.Provider value={{isVisible, products, toggleCart, addProductCart, removeProductCart, increasePoductQuantity, decreaseProductQuantity, productsTotalPrice, productsCount}} >
             {children}
         </CartContext.Provider>
     )
