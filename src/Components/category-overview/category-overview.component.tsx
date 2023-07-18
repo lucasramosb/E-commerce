@@ -23,7 +23,7 @@ const CategoryOverview: FunctionComponent<CategoryOverviewProps> = ({category}) 
         <CategoryTitle>{category.displayName}</CategoryTitle>
 
         <ProductsContainer>
-          {category.products.slice(0, 5).map( product => <ProductItem key={product.id} product={product} />)}
+          {category.products.slice(0, 4).map( product => <ProductItem key={product.id} product={product} />)}
         </ProductsContainer>
       </CategoryContainer>
   )

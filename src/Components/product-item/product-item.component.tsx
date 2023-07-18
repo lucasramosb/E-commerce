@@ -30,7 +30,7 @@ const ProductItem: FunctionComponent<ProductsItemProps> = ({product}) => {
             <ProductInfo>
                 <p>{product.name}</p>
 
-                <p>R${product.price}</p>
+                <p>R$ {product.price}</p>
             </ProductInfo>
         </ProductContainer>
     );
