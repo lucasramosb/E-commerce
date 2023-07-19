@@ -2,6 +2,9 @@
 import HomePage from './Pages/home/home.page';
 import LoginPage from './Pages/login/login.page';
 import SingUpPage from './Pages/sign-up/sign-up.pages';
+import CategoryDetailsPage from './Pages/category-datails/category-datails.page';
+import ExplorePage from './Pages/explore/explore.page';
+import CheckoutPage from './Pages/checkout/checkout.pages';
 
 // Utils
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -12,8 +15,6 @@ import { userContext } from './contexts/user.context'
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { userConverter } from './converters/firestore.converters';
 import Loading from './Components/loading/loading.components';
-import ExplorePage from './Pages/explore/explore.page';
-import CategoryDetailsPage from './Pages/category-datails/category-datails.page';
 import Cart from './Components/cart/cart.component';
 
 const App: FunctionComponent = () => {
@@ -58,6 +59,7 @@ const App: FunctionComponent = () => {
         <Route path='/category/:id' element={ <CategoryDetailsPage/> } />
         <Route path='/login' element={<LoginPage/>} />
         <Route path='/sign-up' element={<SingUpPage/>} />
+        <Route path='/checkout' element={<CheckoutPage/>} />
       </Routes>
 
       <Cart/>

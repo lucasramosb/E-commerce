@@ -52,7 +52,7 @@ const CartContextProvider: FunctionComponent<CartContextProps>  = ({children}) =
         
     }, [products])
     
-    
+    //esconder o carrinho
     const toggleCart = () => {
         //pega o state anterior e seta o inverso 
         setIsVisible( prevState => !prevState )
