@@ -1,4 +1,4 @@
-import { createContext, FunctionComponent, useMemo, useState } from 'react';
+import { createContext, FunctionComponent, useEffect, useMemo, useState } from 'react';
 import CartProduct from "../Types/cart.types";
 import Product from '../Types/product.type';
 
@@ -36,6 +36,23 @@ const CartContextProvider: FunctionComponent<CartContextProps>  = ({children}) =
 
     const [products, setProducts] = useState<CartProduct[]>([])
 
+    //persistir dados do carrinho no localStorage
+    useEffect(() => {
+        const productsFromLocalStorage = JSON.parse(localStorage.getItem('cartProducts')!)
+        if (productsFromLocalStorage) {
+            setProducts(productsFromLocalStorage);
+        }
+
+    }, [])
+
+    useEffect(() => {        
+        if (products.length > 0) {
+            localStorage.setItem('cartProducts', JSON.stringify(products));
+        }
+        
+    }, [products])
+    
+    
     const toggleCart = () => {
         //pega o state anterior e seta o inverso 
         setIsVisible( prevState => !prevState )
@@ -57,8 +74,10 @@ const CartContextProvider: FunctionComponent<CartContextProps>  = ({children}) =
                 )
             )
         }
+        
         //se não => adiciona-lo
         setProducts((prevState) => [...prevState, {...product, quantity: 1}])
+
     }
 
     const removeProductCart = (productId: string) => {
