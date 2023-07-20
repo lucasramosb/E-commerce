@@ -16,6 +16,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { userConverter } from './converters/firestore.converters';
 import Loading from './Components/loading/loading.components';
 import Cart from './Components/cart/cart.component';
+import Authentication from './Components/authentication/authentication.components';
 
 const App: FunctionComponent = () => {
 
@@ -59,7 +60,7 @@ const App: FunctionComponent = () => {
         <Route path='/category/:id' element={ <CategoryDetailsPage/> } />
         <Route path='/login' element={<LoginPage/>} />
         <Route path='/sign-up' element={<SingUpPage/>} />
-        <Route path='/checkout' element={<CheckoutPage/>} />
+        <Route path='/checkout' element={<Authentication> <CheckoutPage/> </Authentication>} />
       </Routes>
 
       <Cart/>
